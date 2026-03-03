@@ -1,0 +1,31 @@
+{
+  "name": "beauty-salon-website",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Beauty salon website built with Astro 5.x, TinaCMS, and Tailwind CSS",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "tina": "tinacms dev -c \"npm run dev\""
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/react": "^3.6.2",
+    "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/tailwind": "^5.1.2",
+    "@tinacms/cli": "^2.1.8",
+    "astro": "^5.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^3.4.17",
+    "tinacms": "^3.6.0",
+    "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1"
+  }
+}

@@ -1,0 +1,132 @@
+---
+/**
+ * Базовый Layout компонент
+ * 
+ * Обеспечивает:
+ * - SEO оптимизацию (мета-теги, Open Graph, Twitter Cards)
+ * - Подключение Tailwind CSS
+ * - Семантичную HTML5 структуру
+ * - Оптимизацию производительности (viewport, charset)
+ */
+
+interface Props {
+  // Мета-данные для SEO
+  title: string;
+  description: string;
+  image?: string; // Open Graph изображение (опционально)
+  
+  // Дополнительная кастомизация
+  canonicalURL?: string; // Канонический URL (важно для SEO)
+  noIndex?: boolean; // Запретить индексацию (для служебных страниц)
+  lang?: string; // Язык страницы (по умолчанию 'ru')
+}
+
+const {
+  title,
+  description,
+  image = '/og-default.jpg', // Дефолтное изображение для соцсетей
+  canonicalURL = Astro.url.href,
+  noIndex = false,
+  lang = 'ru',
+} = Astro.props;
+
+// Полное название сайта для meta-тегов
+const siteName = 'Beauty Salon'; // TODO: Вынести в конфиг
+const fullTitle = `${title} | ${siteName}`;
+
+// Абсолютный URL для Open Graph (требуется протокол + домен)
+const ogImageURL = new URL(image, Astro.site);
+---
+
+<!DOCTYPE html>
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <!-- Базовые мета-теги -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- Канонический URL (предотвращает дублирование контента) -->
+    <link rel="canonical" href={canonicalURL} />
+    
+    <!-- SEO: Основные мета-теги -->
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+    
+    <!-- Open Graph (Facebook, LinkedIn, Telegram) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:locale" content="ru_RU" />
+    
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+    
+    <!-- Preload критичных ресурсов для ускорения загрузки -->
+    <!-- Добавьте шрифты здесь, если используете веб-шрифты -->
+    
+    <!-- Tailwind CSS будет автоматически встроен Astro -->
+    <style is:global>
+      /* Сброс базовых стилей для консистентности */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      /* Улучшение рендеринга текста */
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+      
+      /* Отключение прокрутки при открытых модальных окнах */
+      body.modal-open {
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  
+  <body class="min-h-screen bg-white text-gray-900 antialiased">
+    <!-- 
+      Accessibility: Skip to main content link 
+      (для пользователей скринридеров и навигации с клавиатуры)
+    -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-md"
+    >
+      Перейти к основному содержимому
+    </a>
+    
+    <!-- 
+      Header будет вставлен сюда как отдельный компонент
+      Пример: <Header />
+    -->
+    
+    <!-- Основной контент страницы -->
+    <main id="main-content" class="flex-grow">
+      <slot />
+    </main>
+    
+    <!-- 
+      Footer будет вставлен сюда как отдельный компонент
+      Пример: <Footer />
+    -->
+    
+    <!-- 
+      Скрипты для аналитики и метрик (Google Analytics, Yandex Metrika)
+      Добавляйте через Partytown для офлоада в Web Worker
+    -->
+  </body>
+</html>

@@ -1,0 +1,93 @@
+---
+/**
+ * Страница "Услуги"
+ * 
+ * Демонстрирует правильное использование Content Collections:
+ * 1. Получение данных через getCollection()
+ * 2. Фильтрация и сортировка на этапе сборки
+ * 3. Передача типизированных данных в компоненты
+ */
+
+import Layout from '@/layouts/Layout.astro';
+import ServiceCard from '@/components/ServiceCard.astro';
+import { getCollection } from 'astro:content';
+
+// Получаем все услуги из Content Collection
+// Это происходит на этапе сборки (Build Time), а не в рантайме
+const allServices = await getCollection('services');
+
+// Фильтруем только активные услуги и сортируем по порядку
+const activeServices = allServices
+  .filter((service) => service.data.isActive)
+  .sort((a, b) => {
+    // Сортировка по полю 'order' (если указано), затем по названию
+    const orderA = a.data.order ?? 999;
+    const orderB = b.data.order ?? 999;
+    
+    if (orderA !== orderB) {
+      return orderA - orderB;
+    }
+    
+    return a.data.name.localeCompare(b.data.name, 'ru');
+  });
+
+// SEO мета-данные
+const pageTitle = 'Наши услуги';
+const pageDescription = `Профессиональные услуги перманентного макияжа. ${activeServices.length} услуг от опытных мастеров.`;
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Hero секция -->
+  <section class="bg-gradient-to-br from-blue-50 to-indigo-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="mb-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+          Наши услуги
+        </h1>
+        <p class="mx-auto max-w-2xl text-lg text-gray-600">
+          Мы предлагаем полный спектр услуг по перманентному макияжу и уходу за лицом.
+          Используем только сертифицированные материалы европейского качества.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Список услуг -->
+  <section class="py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {
+        activeServices.length > 0 ? (
+          <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {activeServices.map((service) => (
+              <ServiceCard service={service} />
+            ))}
+          </div>
+        ) : (
+          <div class="rounded-lg bg-yellow-50 p-8 text-center">
+            <p class="text-lg text-yellow-800">
+              Услуги временно недоступны. Пожалуйста, вернитесь позже.
+            </p>
+          </div>
+        )
+      }
+    </div>
+  </section>
+  
+  <!-- CTA секция -->
+  <section class="bg-blue-600 py-16">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="mb-4 text-3xl font-bold text-white">
+        Не нашли нужную услугу?
+      </h2>
+      <p class="mb-8 text-lg text-blue-100">
+        Свяжитесь с нами, и мы подберем индивидуальное решение для вас
+      </p>
+      <a
+        href="/contacts"
+        class="inline-block rounded-lg bg-white px-8 py-3 font-semibold text-blue-600 transition-transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
+      >
+        Связаться с нами
+      </a>
+    </div>
+  </section>
+</Layout>

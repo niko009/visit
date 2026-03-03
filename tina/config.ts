@@ -1,0 +1,258 @@
+import { defineConfig } from 'tinacms';
+
+// Конфигурация TinaCMS
+// Все коллекции синхронизированы с src/content/config.ts
+
+export default defineConfig({
+  // Git-based хранилище
+  branch: 'main', // основная ветка
+  clientId: process.env.TINA_CLIENT_ID, // GitHub OAuth Client ID (опционально)
+  token: process.env.TINA_TOKEN, // GitHub Token (опционально)
+  
+  // Конфигурация сборки
+  build: {
+    outputFolder: 'admin',
+    publicFolder: 'public',
+  },
+
+  // Конфигурация CMSMedia
+  media: {
+    tina: {
+      mediaRoot: 'uploads',
+      publicFolder: 'public',
+    },
+  },
+
+  // Схемы коллекций контента
+  schema: {
+    collections: [
+      /**
+       * Коллекция "Services" (Услуги)
+       * Синхронизирована с src/content/services/
+       */
+      {
+        label: 'Услуги',
+        name: 'services',
+        path: 'src/content/services',
+        format: 'json',
+        ui: {
+          defaultItem: {
+            isActive: true,
+          },
+        },
+        fields: [
+          {
+            type: 'string',
+            label: 'Название услуги',
+            name: 'name',
+            description: 'Например: Перманентный макияж бровей',
+            required: true,
+            ui: {
+              validate: (value) => {
+                if (!value || value.length < 3) {
+                  return 'Название должно содержать минимум 3 символа';
+                }
+                if (value.length > 100) {
+                  return 'Название слишком длинное (максимум 100 символов)';
+                }
+              },
+            },
+          },
+          {
+            type: 'number',
+            label: 'Цена (₽)',
+            name: 'price',
+            description: 'Цена услуги в рублях',
+            required: true,
+            ui: {
+              min: 0,
+              step: 100,
+            },
+          },
+          {
+            type: 'number',
+            label: 'Длительность (мин)',
+            name: 'duration',
+            description: 'Сколько минут длится процедура',
+            required: true,
+            ui: {
+              min: 15,
+              step: 5,
+            },
+          },
+          {
+            type: 'string',
+            label: 'Описание',
+            name: 'description',
+            description: 'Подробное описание услуги',
+            required: true,
+            ui: {
+              component: 'textarea',
+            },
+            validate: (value) => {
+              if (!value || value.length < 20) {
+                return 'Описание должно быть минимум 20 символов';
+              }
+              if (value.length > 1000) {
+                return 'Описание слишком длинное (максимум 1000 символов)';
+              }
+            },
+          },
+          {
+            type: 'image',
+            label: 'Изображение услуги',
+            name: 'image',
+            description: 'JPG или PNG, минимум 400x300px',
+            required: true,
+          },
+          {
+            type: 'number',
+            label: 'Порядок отображения',
+            name: 'order',
+            description: 'Услуги сортируются по этому значению (по возрастанию)',
+            ui: {
+              min: 0,
+              step: 1,
+            },
+          },
+          {
+            type: 'boolean',
+            label: 'Активна',
+            name: 'isActive',
+            description: 'Показывать ли эту услугу на сайте',
+          },
+        ],
+      },
+
+      /**
+       * Коллекция "Masters" (Мастера)
+       * Синхронизирована с src/content/masters/
+       */
+      {
+        label: 'Мастера',
+        name: 'masters',
+        path: 'src/content/masters',
+        format: 'json',
+        ui: {
+          defaultItem: {
+            isActive: true,
+          },
+        },
+        fields: [
+          {
+            type: 'string',
+            label: 'Полное имя',
+            name: 'name',
+            required: true,
+            ui: {
+              validate: (value) => {
+                if (!value || value.length < 2) {
+                  return 'Имя слишком короткое';
+                }
+                if (value.length > 100) {
+                  return 'Имя слишком длинное';
+                }
+              },
+            },
+          },
+          {
+            type: 'string',
+            label: 'Должность',
+            name: 'position',
+            description: 'Например: Мастер перманентного макияжа',
+            required: true,
+            ui: {
+              validate: (value) => {
+                if (!value || value.length < 3) {
+                  return 'Должность должна быть указана';
+                }
+                if (value.length > 150) {
+                  return 'Должность слишком длинная';
+                }
+              },
+            },
+          },
+          {
+            type: 'number',
+            label: 'Опыт (лет)',
+            name: 'experience',
+            description: 'Количество лет работы',
+            required: true,
+            ui: {
+              min: 0,
+              max: 100,
+              step: 1,
+            },
+          },
+          {
+            type: 'string',
+            label: 'Биография',
+            name: 'bio',
+            description: 'Полное описание мастера, достижения, сертификаты',
+            required: true,
+            ui: {
+              component: 'textarea',
+            },
+            validate: (value) => {
+              if (!value || value.length < 50) {
+                return 'Биография должна быть подробной (минимум 50 символов)';
+              }
+              if (value.length > 2000) {
+                return 'Биография слишком длинная (максимум 2000 символов)';
+              }
+            },
+          },
+          {
+            type: 'image',
+            label: 'Фотография',
+            name: 'photo',
+            description: 'Портретная фото мастера, минимум 300x300px',
+            required: true,
+          },
+          {
+            type: 'string',
+            label: 'Instagram',
+            name: 'instagram',
+            description: 'Полная ссылка на профиль (опционально)',
+            ui: {
+              validate: (value) => {
+                if (value && !value.startsWith('http')) {
+                  return 'Введите полную ссылку (https://...)';
+                }
+              },
+            },
+          },
+          {
+            type: 'string',
+            label: 'Telegram',
+            name: 'telegram',
+            description: 'Полная ссылка на профиль (опционально)',
+            ui: {
+              validate: (value) => {
+                if (value && !value.startsWith('http')) {
+                  return 'Введите полную ссылку (https://...)';
+                }
+              },
+            },
+          },
+          {
+            type: 'number',
+            label: 'Порядок отображения',
+            name: 'order',
+            description: 'Мастера сортируются по этому значению (по возрастанию)',
+            ui: {
+              min: 0,
+              step: 1,
+            },
+          },
+          {
+            type: 'boolean',
+            label: 'Активен',
+            name: 'isActive',
+            description: 'Показывать ли этого мастера на сайте',
+          },
+        ],
+      },
+    ],
+  },
+});

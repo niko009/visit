@@ -1,0 +1,138 @@
+---
+/**
+ * Главная страница сайта
+ */
+
+import Layout from '@/layouts/Layout.astro';
+
+const pageTitle = 'Главная';
+const pageDescription = 'Профессиональные услуги салона красоты. Перманентный макияж, уход за лицом, мастера с многолетним опытом.';
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Hero Section -->
+  <section class="relative min-h-screen flex items-center bg-gradient-to-br from-blue-50 via-indigo-50 to-pink-50">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
+      <div class="text-center">
+        <!-- Заголовок -->
+        <h1 class="mb-6 text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl">
+          Красота, которая
+          <span class="bg-gradient-to-r from-blue-600 to-pink-600 bg-clip-text text-transparent">
+            вдохновляет
+          </span>
+        </h1>
+        
+        <!-- Подзаголовок -->
+        <p class="mx-auto mb-10 max-w-2xl text-lg text-gray-600 sm:text-xl">
+          Профессиональный перманентный макияж и уход за лицом. 
+          Европейские стандарты качества, сертифицированные мастера с опытом более 8 лет.
+        </p>
+        
+        <!-- Call to Action -->
+        <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a
+            href="/services"
+            class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-8 py-4 text-base font-semibold text-white transition-all hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
+          >
+            Наши услуги
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="ml-2 h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+              />
+            </svg>
+          </a>
+          
+          <a
+            href="/contacts"
+            class="inline-flex items-center justify-center rounded-lg border-2 border-gray-300 bg-white px-8 py-4 text-base font-semibold text-gray-900 transition-all hover:border-blue-600 hover:text-blue-600 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-gray-200"
+          >
+            Связаться с нами
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Декоративные элементы -->
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-blue-400 opacity-20 blur-3xl"></div>
+      <div class="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-pink-400 opacity-20 blur-3xl"></div>
+    </div>
+  </section>
+  
+  <!-- Features Section -->
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-12 text-center text-3xl font-bold text-gray-900">
+        Почему выбирают нас
+      </h2>
+      
+      <div class="grid gap-8 md:grid-cols-3">
+        <!-- Feature 1 -->
+        <div class="text-center">
+          <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="mb-2 text-xl font-semibold text-gray-900">Качество</h3>
+          <p class="text-gray-600">
+            Используем только сертифицированные европейские пигменты премиум-класса
+          </p>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div class="text-center">
+          <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-pink-100">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </div>
+          <h3 class="mb-2 text-xl font-semibold text-gray-900">Опыт</h3>
+          <p class="text-gray-600">
+            Наши мастера имеют более 8 лет опыта и регулярно повышают квалификацию
+          </p>
+        </div>
+        
+        <!-- Feature 3 -->
+        <div class="text-center">
+          <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+            </svg>
+          </div>
+          <h3 class="mb-2 text-xl font-semibold text-gray-900">Гарантия</h3>
+          <p class="text-gray-600">
+            Даем гарантию на все работы и бесплатную коррекцию в течение месяца
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Section -->
+  <section class="bg-gradient-to-r from-blue-600 to-indigo-700 py-16">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="mb-4 text-3xl font-bold text-white">
+        Готовы преобразиться?
+      </h2>
+      <p class="mb-8 text-lg text-blue-100">
+        Запишитесь на консультацию прямо сейчас и получите скидку 10% на первую процедуру
+      </p>
+      <a
+        href="/services"
+        class="inline-block rounded-lg bg-white px-8 py-3 font-semibold text-blue-600 transition-transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
+      >
+        Записаться на консультацию
+      </a>
+    </div>
+  </section>
+</Layout>
