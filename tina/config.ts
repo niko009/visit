@@ -35,11 +35,6 @@ export default defineConfig({
         name: 'services',
         path: 'src/content/services',
         format: 'json',
-        ui: {
-          defaultItem: {
-            isActive: true,
-          },
-        },
         fields: [
           {
             type: 'string',
@@ -48,7 +43,7 @@ export default defineConfig({
             description: 'Например: Перманентный макияж бровей',
             required: true,
             ui: {
-              validate: (value) => {
+              validate: (value: any) => {
                 if (!value || value.length < 3) {
                   return 'Название должно содержать минимум 3 символа';
                 }
@@ -64,10 +59,6 @@ export default defineConfig({
             name: 'price',
             description: 'Цена услуги в рублях',
             required: true,
-            ui: {
-              min: 0,
-              step: 100,
-            },
           },
           {
             type: 'number',
@@ -75,10 +66,6 @@ export default defineConfig({
             name: 'duration',
             description: 'Сколько минут длится процедура',
             required: true,
-            ui: {
-              min: 15,
-              step: 5,
-            },
           },
           {
             type: 'string',
@@ -88,14 +75,14 @@ export default defineConfig({
             required: true,
             ui: {
               component: 'textarea',
-            },
-            validate: (value) => {
-              if (!value || value.length < 20) {
-                return 'Описание должно быть минимум 20 символов';
-              }
-              if (value.length > 1000) {
-                return 'Описание слишком длинное (максимум 1000 символов)';
-              }
+              validate: (value: any) => {
+                if (!value || value.length < 20) {
+                  return 'Описание должно быть минимум 20 символов';
+                }
+                if (value.length > 1000) {
+                  return 'Описание слишком длинное (максимум 1000 символов)';
+                }
+              },
             },
           },
           {
@@ -110,10 +97,6 @@ export default defineConfig({
             label: 'Порядок отображения',
             name: 'order',
             description: 'Услуги сортируются по этому значению (по возрастанию)',
-            ui: {
-              min: 0,
-              step: 1,
-            },
           },
           {
             type: 'boolean',
@@ -133,11 +116,6 @@ export default defineConfig({
         name: 'masters',
         path: 'src/content/masters',
         format: 'json',
-        ui: {
-          defaultItem: {
-            isActive: true,
-          },
-        },
         fields: [
           {
             type: 'string',
@@ -145,7 +123,7 @@ export default defineConfig({
             name: 'name',
             required: true,
             ui: {
-              validate: (value) => {
+              validate: (value: any) => {
                 if (!value || value.length < 2) {
                   return 'Имя слишком короткое';
                 }
@@ -162,7 +140,7 @@ export default defineConfig({
             description: 'Например: Мастер перманентного макияжа',
             required: true,
             ui: {
-              validate: (value) => {
+              validate: (value: any) => {
                 if (!value || value.length < 3) {
                   return 'Должность должна быть указана';
                 }
@@ -178,11 +156,6 @@ export default defineConfig({
             name: 'experience',
             description: 'Количество лет работы',
             required: true,
-            ui: {
-              min: 0,
-              max: 100,
-              step: 1,
-            },
           },
           {
             type: 'string',
@@ -192,14 +165,14 @@ export default defineConfig({
             required: true,
             ui: {
               component: 'textarea',
-            },
-            validate: (value) => {
-              if (!value || value.length < 50) {
-                return 'Биография должна быть подробной (минимум 50 символов)';
-              }
-              if (value.length > 2000) {
-                return 'Биография слишком длинная (максимум 2000 символов)';
-              }
+              validate: (value: any) => {
+                if (!value || value.length < 50) {
+                  return 'Биография должна быть подробной (минимум 50 символов)';
+                }
+                if (value.length > 2000) {
+                  return 'Биография слишком длинная (максимум 2000 символов)';
+                }
+              },
             },
           },
           {
@@ -215,7 +188,7 @@ export default defineConfig({
             name: 'instagram',
             description: 'Полная ссылка на профиль (опционально)',
             ui: {
-              validate: (value) => {
+              validate: (value: any) => {
                 if (value && !value.startsWith('http')) {
                   return 'Введите полную ссылку (https://...)';
                 }
@@ -228,7 +201,7 @@ export default defineConfig({
             name: 'telegram',
             description: 'Полная ссылка на профиль (опционально)',
             ui: {
-              validate: (value) => {
+              validate: (value: any) => {
                 if (value && !value.startsWith('http')) {
                   return 'Введите полную ссылку (https://...)';
                 }
@@ -240,10 +213,6 @@ export default defineConfig({
             label: 'Порядок отображения',
             name: 'order',
             description: 'Мастера сортируются по этому значению (по возрастанию)',
-            ui: {
-              min: 0,
-              step: 1,
-            },
           },
           {
             type: 'boolean',
@@ -263,11 +232,6 @@ export default defineConfig({
         name: 'gallery',
         path: 'src/content/gallery',
         format: 'json',
-        ui: {
-          defaultItem: {
-            isActive: true,
-          },
-        },
         fields: [
           {
             type: 'string',
@@ -332,10 +296,6 @@ export default defineConfig({
             label: 'Порядок отображения',
             name: 'order',
             description: 'Работы сортируются по этому значению (по возрастанию)',
-            ui: {
-              min: 0,
-              step: 1,
-            },
           },
           {
             type: 'boolean',
