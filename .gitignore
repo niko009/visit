@@ -7,7 +7,7 @@ pnpm-lock.yaml
 # Build output
 dist/
 .astro/
-
+.tina
 # Environment files
 .env
 .env.local

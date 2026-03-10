@@ -1,138 +1,140 @@
 ---
-/**
- * Главная страница сайта
- */
-
 import Layout from '@/layouts/Layout.astro';
+import { SiteHeader } from '@/react/SiteHeader';
+import { HeroSection } from '@/react/HeroSection';
+import { StatsSection } from '@/react/StatsSection';
+import { AboutSection } from '@/react/AboutSection';
+import { ServicesList } from '@/react/ServicesList';
+import { MastersList } from '@/react/MastersList';
+import { GallerySection } from '@/react/GallerySection';
+import { SiteFooter } from '@/react/SiteFooter';
+import { getCollection } from 'astro:content';
+import type { Service } from '@/react/ServicesList';
+import type { Master } from '@/react/MastersList';
 
-const pageTitle = 'Главная';
-const pageDescription = 'Профессиональные услуги салона красоты. Перманентный макияж, уход за лицом, мастера с многолетним опытом.';
+// Получаем данные из Content Collections
+const servicesCollection = await getCollection('services');
+const mastersCollection = await getCollection('masters');
+const galleryCollection = await getCollection('gallery');
+
+// Преобразуем в подходящие типы
+const services: Service[] = servicesCollection.map((s: any) => ({
+  id: s.id,
+  data: {
+    name: s.data.name,
+    description: s.data.description,
+    price: s.data.price,
+    duration: s.data.duration,
+    image: typeof s.data.image === 'string' ? s.data.image : s.data.image.src,
+    order: s.data.order,
+    isActive: s.data.isActive,
+  },
+}));
+
+const masters: Master[] = mastersCollection.map((m: any) => ({
+  id: m.id,
+  data: {
+    name: m.data.name,
+    position: m.data.position,
+    experience: m.data.experience,
+    bio: m.data.bio,
+    photo: typeof m.data.photo === 'string' ? m.data.photo : m.data.photo.src,
+    instagram: m.data.instagram,
+    telegram: m.data.telegram,
+    order: m.data.order,
+    isActive: m.data.isActive,
+  },
+}));
+
+// Сортируем по порядку
+const sortedServices = services.sort((a: Service, b: Service) => (a.data.order || 0) - (b.data.order || 0));
+const sortedMasters = masters.sort((a: Master, b: Master) => (a.data.order || 0) - (b.data.order || 0));
+const sortedGallery = galleryCollection.sort((a: any, b: any) => (a.data.order || 0) - (b.data.order || 0));
+
+// Готовим данные галереи
+const galleryImages = sortedGallery.map((item: any) => ({
+  src: typeof item.data.imageAfter === 'string' ? item.data.imageAfter : item.data.imageAfter.src,
+  alt: item.data.title,
+}));
+
+// Статистика
+const stats = [
+  { value: '500+', label: 'Довольных клиентов' },
+  { value: '8+', label: 'Лет опыта' },
+  { value: '100%', label: 'Стерильность' },
+  { value: '24/7', label: 'В социальных сетях' },
+];
+
+const pageTitle = 'Brow & Lip Studio - Перманентный макияж';
+const pageDescription = 'Профессиональные услуги перманентного макияжа бровей и губ от сертифицированных мастеров. Естественная красота надолго.';
+
+const heroTitle = 'Естественная красота надолго';
+const heroDescription = 'Перманентный макияж бровей и губ от сертифицированных мастеров. Подчёркиваем вашу природную красоту с помощью авторских техник и премиальных пигментов.';
+
+const aboutTitle = 'Красота, которой вы доверяете';
+const aboutDescription = [
+  'Brow & Lip Studio — это пространство, созданное для тех, кто хочет подчеркнуть свою природную красоту. Мы специализируемся на перманентном макияже бровей и губ, используя современные техники, которые дарят максимально естественный результат.',
+  'Каждая процедура начинается с детальной консультации и построения индивидуальной формы, чтобы результат идеально подходил именно вам.',
+];
+
+// Development mode indicator
+const isDev = import.meta.env.DEV;
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-  <!-- Hero Section -->
-  <section class="relative min-h-screen flex items-center bg-gradient-to-br from-blue-50 via-indigo-50 to-pink-50">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
-      <div class="text-center">
-        <!-- Заголовок -->
-        <h1 class="mb-6 text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl">
-          Красота, которая
-          <span class="bg-gradient-to-r from-blue-600 to-pink-600 bg-clip-text text-transparent">
-            вдохновляет
-          </span>
-        </h1>
-        
-        <!-- Подзаголовок -->
-        <p class="mx-auto mb-10 max-w-2xl text-lg text-gray-600 sm:text-xl">
-          Профессиональный перманентный макияж и уход за лицом. 
-          Европейские стандарты качества, сертифицированные мастера с опытом более 8 лет.
-        </p>
-        
-        <!-- Call to Action -->
-        <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <a
-            href="/services"
-            class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-8 py-4 text-base font-semibold text-white transition-all hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
-          >
-            Наши услуги
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="ml-2 h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 7l5 5m0 0l-5 5m5-5H6"
-              />
-            </svg>
-          </a>
-          
-          <a
-            href="/contacts"
-            class="inline-flex items-center justify-center rounded-lg border-2 border-gray-300 bg-white px-8 py-4 text-base font-semibold text-gray-900 transition-all hover:border-blue-600 hover:text-blue-600 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-gray-200"
-          >
-            Связаться с нами
-          </a>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Декоративные элементы -->
-    <div class="absolute inset-0 -z-10 overflow-hidden">
-      <div class="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-blue-400 opacity-20 blur-3xl"></div>
-      <div class="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-pink-400 opacity-20 blur-3xl"></div>
-    </div>
-  </section>
-  
-  <!-- Features Section -->
-  <section class="bg-white py-16">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-12 text-center text-3xl font-bold text-gray-900">
-        Почему выбирают нас
-      </h2>
-      
-      <div class="grid gap-8 md:grid-cols-3">
-        <!-- Feature 1 -->
-        <div class="text-center">
-          <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <h3 class="mb-2 text-xl font-semibold text-gray-900">Качество</h3>
-          <p class="text-gray-600">
-            Используем только сертифицированные европейские пигменты премиум-класса
-          </p>
-        </div>
-        
-        <!-- Feature 2 -->
-        <div class="text-center">
-          <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-pink-100">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-          </div>
-          <h3 class="mb-2 text-xl font-semibold text-gray-900">Опыт</h3>
-          <p class="text-gray-600">
-            Наши мастера имеют более 8 лет опыта и регулярно повышают квалификацию
-          </p>
-        </div>
-        
-        <!-- Feature 3 -->
-        <div class="text-center">
-          <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-            </svg>
-          </div>
-          <h3 class="mb-2 text-xl font-semibold text-gray-900">Гарантия</h3>
-          <p class="text-gray-600">
-            Даем гарантию на все работы и бесплатную коррекцию в течение месяца
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- CTA Section -->
-  <section class="bg-gradient-to-r from-blue-600 to-indigo-700 py-16">
-    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-      <h2 class="mb-4 text-3xl font-bold text-white">
-        Готовы преобразиться?
-      </h2>
-      <p class="mb-8 text-lg text-blue-100">
-        Запишитесь на консультацию прямо сейчас и получите скидку 10% на первую процедуру
-      </p>
+  <!-- Development Admin Panel Link -->
+  {isDev && (
+    <div class="fixed bottom-4 right-4 z-50">
       <a
-        href="/services"
-        class="inline-block rounded-lg bg-white px-8 py-3 font-semibold text-blue-600 transition-transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
+        href="/admin"
+        class="flex items-center gap-2 rounded-full bg-purple-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-purple-700 hover:scale-105"
+        title="Открыть админ-панель TinaCMS"
       >
-        Записаться на консультацию
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+        </svg>
+        <span>Админка</span>
       </a>
     </div>
-  </section>
+  )}
+
+  {/* Header */}
+  <SiteHeader client:load />
+
+  {/* Hero Section */}
+  <HeroSection
+    client:visible
+    title={heroTitle}
+    description={heroDescription}
+    backgroundImage="/images/hero.jpg"
+    ctaText="Записаться на консультацию"
+    ctaHref="#booking"
+    secondaryCTA={{
+      text: 'Наши услуги',
+      href: '#services',
+    }}
+  />
+
+  {/* Stats Section */}
+  <StatsSection client:visible stats={stats} />
+
+  {/* About Section */}
+  <AboutSection
+    client:visible
+    image="/images/about.jpg"
+    title={aboutTitle}
+    description={aboutDescription}
+  />
+
+  {/* Services Section */}
+  <ServicesList client:visible services={sortedServices} />
+
+  {/* Masters Section */}
+  <MastersList client:visible masters={sortedMasters} />
+
+  {/* Gallery Section */}
+  {galleryImages.length > 0 && <GallerySection client:visible images={galleryImages} />}
+
+  {/* Footer */}
+  <SiteFooter client:load />
 </Layout>

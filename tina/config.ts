@@ -253,6 +253,98 @@ export default defineConfig({
           },
         ],
       },
+
+      /**
+       * Коллекция "Gallery" (Галерея)
+       * Синхронизирована с src/content/gallery/
+       */
+      {
+        label: 'Галерея',
+        name: 'gallery',
+        path: 'src/content/gallery',
+        format: 'json',
+        ui: {
+          defaultItem: {
+            isActive: true,
+          },
+        },
+        fields: [
+          {
+            type: 'string',
+            label: 'Название работы',
+            name: 'title',
+            description: 'Например: Перманентный макияж бровей',
+            required: true,
+          },
+          {
+            type: 'string',
+            label: 'Категория',
+            name: 'category',
+            description: 'Тип услуги',
+            required: true,
+            options: [
+              { label: 'Брови', value: 'brouws' },
+              { label: 'Губы', value: 'lips' },
+              { label: 'Межресничка', value: 'eyeliner' },
+              { label: 'Ногти', value: 'nails' },
+              { label: 'Уход за лицом', value: 'face' },
+              { label: 'Другое', value: 'other' },
+            ],
+          },
+          {
+            type: 'string',
+            label: 'Описание',
+            name: 'description',
+            description: 'Описание выполненной работы',
+            required: true,
+            ui: {
+              component: 'textarea',
+            },
+          },
+          {
+            type: 'image',
+            label: 'Фото "До"',
+            name: 'imageBefore',
+            description: 'Фотография до процедуры',
+            required: true,
+          },
+          {
+            type: 'image',
+            label: 'Фото "После"',
+            name: 'imageAfter',
+            description: 'Фотография после процедуры',
+            required: true,
+          },
+          {
+            type: 'string',
+            label: 'Имя мастера',
+            name: 'masterName',
+            description: 'Кто выполнил работу (опционально)',
+          },
+          {
+            type: 'datetime',
+            label: 'Дата выполнения',
+            name: 'date',
+            description: 'Когда была выполнена работа (опционально)',
+          },
+          {
+            type: 'number',
+            label: 'Порядок отображения',
+            name: 'order',
+            description: 'Работы сортируются по этому значению (по возрастанию)',
+            ui: {
+              min: 0,
+              step: 1,
+            },
+          },
+          {
+            type: 'boolean',
+            label: 'Активна',
+            name: 'isActive',
+            description: 'Показывать ли эту работу на сайте',
+          },
+        ],
+      },
     ],
   },
 });

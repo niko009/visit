@@ -32,7 +32,10 @@ src/
 # Install dependencies
 npm install
 
-# Start dev server
+# Start dev server with TinaCMS (recommended)
+npm run tina
+
+# Start dev server without CMS
 npm run dev
 
 # Build for production
@@ -41,6 +44,18 @@ npm run build
 # Preview production build
 npm run preview
 ```
+
+## 🎨 TinaCMS Admin Panel
+
+**Access:** http://localhost:4321/admin
+
+The admin panel allows you to:
+- ✅ Add/edit services with images
+- ✅ Manage team member profiles
+- ✅ Upload images directly
+- ✅ All changes automatically saved to Git
+
+**Full guide:** See [TINACMS_GUIDE.md](TINACMS_GUIDE.md)
 
 ## 📝 Content Management
 

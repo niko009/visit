@@ -76,6 +76,26 @@ const ogImageURL = new URL(image, Astro.site);
     
     <!-- Tailwind CSS будет автоматически встроен Astro -->
     <style is:global>
+      :root {
+        --background: #f8f4f4;
+        --foreground: #1e1212;
+        --card: #fffdfd;
+        --card-foreground: #1e1212;
+        --popover: #fffdfd;
+        --popover-foreground: #1e1212;
+        --primary: #a35764;
+        --primary-foreground: #fdfbfb;
+        --secondary: #f2e9e8;
+        --secondary-foreground: #372a2a;
+        --muted: #ede6e6;
+        --muted-foreground: #6e5f5e;
+        --accent: #efe1e0;
+        --accent-foreground: #2b1e1e;
+        --border: #e8dada;
+        --input: #e8dada;
+        --ring: #a35764;
+      }
+
       /* Сброс базовых стилей для консистентности */
       * {
         margin: 0;
@@ -88,23 +108,29 @@ const ogImageURL = new URL(image, Astro.site);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-rendering: optimizeLegibility;
+        background-color: var(--background);
+        color: var(--foreground);
       }
       
       /* Отключение прокрутки при открытых модальных окнах */
       body.modal-open {
         overflow: hidden;
       }
+
+      .bg-background\/80 {
+        background-color: color-mix(in oklab, var(--background) 80%, transparent);
+      }
     </style>
   </head>
   
-  <body class="min-h-screen bg-white text-gray-900 antialiased">
+  <body class="min-h-screen bg-background text-foreground antialiased">
     <!-- 
       Accessibility: Skip to main content link 
       (для пользователей скринридеров и навигации с клавиатуры)
     -->
     <a
       href="#main-content"
-      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-md"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md"
     >
       Перейти к основному содержимому
     </a>

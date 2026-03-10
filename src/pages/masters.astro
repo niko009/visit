@@ -1,0 +1,140 @@
+---
+/**
+ * Страница "Мастера"
+ * 
+ * Демонстрирует правильное использование Content Collections:
+ * 1. Получение данных через getCollection()
+ * 2. Фильтрация и сортировка на этапе сборки
+ * 3. Передача типизированных данных в компоненты
+ */
+
+import Layout from '@/layouts/Layout.astro';
+import MasterCard from '@/components/MasterCard.astro';
+import { getCollection } from 'astro:content';
+
+// Получаем всех мастеров из Content Collection
+// Это происходит на этапе сборки (Build Time), а не в рантайме
+const allMasters = await getCollection('masters');
+
+// Фильтруем только активных мастеров и сортируем по порядку
+const activeMasters = allMasters
+  .filter((master: any) => master.data.isActive)
+  .sort((a: any, b: any) => {
+    // Сортировка по полю 'order' (если указано), затем по имени
+    const orderA = a.data.order ?? 999;
+    const orderB = b.data.order ?? 999;
+    
+    if (orderA !== orderB) {
+      return orderA - orderB;
+    }
+    
+    return a.data.name.localeCompare(b.data.name, 'ru');
+  });
+
+// SEO мета-данные
+const pageTitle = 'Наши мастера';
+const pageDescription = `Команда профессионалов с опытом работы. ${activeMasters.length} специалистов готовы помочь вам.`;
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Hero секция -->
+  <section class="bg-gradient-to-br from-blue-50 to-indigo-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="mb-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+          Наши мастера
+        </h1>
+        <p class="mx-auto max-w-2xl text-lg text-gray-600">
+          Профессиональная команда сертифицированных специалистов с многолетним опытом работы.
+          Каждый мастер регулярно проходит повышение квалификации и следит за трендами индустрии.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Список мастеров -->
+  <section class="py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {
+        activeMasters.length > 0 ? (
+          <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {activeMasters.map((master: any) => (
+              <MasterCard master={master} />
+            ))}
+          </div>
+        ) : (
+          <div class="rounded-lg bg-yellow-50 p-8 text-center">
+            <p class="text-lg text-yellow-800">
+              Информация о мастерах временно недоступна. Пожалуйста, вернитесь позже.
+            </p>
+          </div>
+        )
+      }
+    </div>
+  </section>
+  
+  <!-- Статистика секция -->
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <!-- Количество мастеров -->
+        <div class="text-center">
+          <div class="mb-2 text-4xl font-bold text-blue-600">
+            {activeMasters.length}
+          </div>
+          <div class="text-sm font-medium uppercase tracking-wide text-gray-600">
+            Мастеров в команде
+          </div>
+        </div>
+        
+        <!-- Общий опыт -->
+        <div class="text-center">
+          <div class="mb-2 text-4xl font-bold text-blue-600">
+            {activeMasters.reduce((sum: number, master: any) => sum + master.data.experience, 0)}+
+          </div>
+          <div class="text-sm font-medium uppercase tracking-wide text-gray-600">
+            Лет совместного опыта
+          </div>
+        </div>
+        
+        <!-- Довольных клиентов -->
+        <div class="text-center">
+          <div class="mb-2 text-4xl font-bold text-blue-600">
+            5000+
+          </div>
+          <div class="text-sm font-medium uppercase tracking-wide text-gray-600">
+            Довольных клиентов
+          </div>
+        </div>
+        
+        <!-- Сертификатов -->
+        <div class="text-center">
+          <div class="mb-2 text-4xl font-bold text-blue-600">
+            100%
+          </div>
+          <div class="text-sm font-medium uppercase tracking-wide text-gray-600">
+            Сертифицированы
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA секция -->
+  <section class="bg-blue-600 py-16">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="mb-4 text-3xl font-bold text-white">
+        Не можете выбрать мастера?
+      </h2>
+      <p class="mb-8 text-lg text-blue-100">
+        Свяжитесь с нами, и мы поможем подобрать специалиста под ваши предпочтения
+      </p>
+      <a
+        href="/contacts"
+        class="inline-block rounded-lg bg-white px-8 py-3 font-semibold text-blue-600 transition-transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
+      >
+        Связаться с нами
+      </a>
+    </div>
+  </section>
+</Layout>

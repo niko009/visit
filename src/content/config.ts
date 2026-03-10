@@ -89,10 +89,53 @@ const mastersCollection = defineCollection({
 });
 
 /**
+ * Коллекция "Галерея"
+ * Хранит фотографии работ "до/после"
+ */
+const galleryCollection = defineCollection({
+  type: 'data',
+  schema: ({ image }) => z.object({
+    // Название работы (например, "Перманентный макияж бровей")
+    title: z.string()
+      .min(3, 'Название должно содержать минимум 3 символа')
+      .max(150, 'Название слишком длинное'),
+    
+    // Категория/тип услуги
+    category: z.enum(['brouws', 'lips', 'eyeliner', 'nails', 'face', 'other'], {
+      errorMap: () => ({ message: 'Выберите категорию' }),
+    }),
+    
+    // Описание работы
+    description: z.string()
+      .min(10, 'Описание должно быть информативным')
+      .max(500, 'Описание слишком длинное'),
+    
+    // Фото "до"
+    imageBefore: image(),
+    
+    // Фото "после"
+    imageAfter: image(),
+    
+    // Имя мастера (опционально)
+    masterName: z.string().optional(),
+    
+    // Дата выполнения работы (опционально)
+    date: z.date().optional(),
+    
+    // Порядок отображения
+    order: z.number().int().optional(),
+    
+    // Активна ли запись
+    isActive: z.boolean().default(true),
+  }),
+});
+
+/**
  * Экспорт коллекций
  * Astro автоматически сгенерирует типы TypeScript на их основе
  */
 export const collections = {
   services: servicesCollection,
   masters: mastersCollection,
+  gallery: galleryCollection,
 };
